@@ -19,7 +19,7 @@ namespace NetCoreServer
             {
                 builder
                     .AddService<EchoService>()
-                    .AddServiceEndpoint<EchoService, Contract.IEchoService>(new BasicHttpBinding(), "/basichttp")
+                    //.AddServiceEndpoint<EchoService, Contract.IEchoService>(new BasicHttpBinding(), "/basichttp")
                     .AddServiceEndpoint<EchoService, Contract.IEchoService>(new NetTcpBinding(), "/nettcp");
             });
         }

@@ -14,8 +14,11 @@ namespace NetCoreClient
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Press any key to start client");
+            Console.ReadKey();
+
             CallUsingWcf();
-            CallUsingWebRequest();
+            //CallUsingWebRequest();
 
             Console.WriteLine("Hit enter to exit");
             Console.ReadLine();
@@ -23,30 +26,32 @@ namespace NetCoreClient
 
         private static void CallUsingWcf()
         {
-            var factory = new ChannelFactory<Contract.IEchoService>(new BasicHttpBinding(), new EndpointAddress(_basicHttpEndPointAddress));
+            //var factory = new ChannelFactory<Contract.IEchoService>(new BasicHttpBinding(), new EndpointAddress(_basicHttpEndPointAddress));
+            //factory.Open();
+            //var channel = factory.CreateChannel();
+            //((IClientChannel)channel).Open();
+            //Console.WriteLine("http Echo(\"Hello\") => " + channel.Echo("Hello"));
+            //((IClientChannel)channel).Close();
+            //factory.Close();
+
+            var callback = new EchoServiceCallback();
+            var instanceContext = new InstanceContext(callback);
+            var factory = new DuplexChannelFactory<Contract.IEchoService>(instanceContext, new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:8808/nettcp"));
             factory.Open();
             var channel = factory.CreateChannel();
-            ((IClientChannel)channel).Open();
-            Console.WriteLine("http Echo(\"Hello\") => " + channel.Echo("Hello"));
-            ((IClientChannel)channel).Close();
-            factory.Close();
-
-            factory = new ChannelFactory<Contract.IEchoService>(new NetTcpBinding(), new EndpointAddress("net.tcp://localhost:8808/nettcp"));
-            factory.Open();
-            channel = factory.CreateChannel();
             ((IClientChannel)channel).Open();
             Console.WriteLine("net.tcp Echo(\"Hello\") => " + channel.Echo("Hello"));
             ((IClientChannel)channel).Close();
             factory.Close();
 
-            // Complex type testing
-            factory = new ChannelFactory<Contract.IEchoService>(new BasicHttpBinding(), new EndpointAddress(_basicHttpEndPointAddress));
-            factory.Open();
-            channel = factory.CreateChannel();
-            ((IClientChannel)channel).Open();
-            Console.WriteLine("http EchoMessage(\"Complex Hello\") => " + channel.ComplexEcho(new Contract.EchoMessage() { Text = "Complex Hello" }));
-            ((IClientChannel)channel).Close();
-            factory.Close();
+            //// Complex type testing
+            //factory = new ChannelFactory<Contract.IEchoService>(new BasicHttpBinding(), new EndpointAddress(_basicHttpEndPointAddress));
+            //factory.Open();
+            //channel = factory.CreateChannel();
+            //((IClientChannel)channel).Open();
+            //Console.WriteLine("http EchoMessage(\"Complex Hello\") => " + channel.ComplexEcho(new Contract.EchoMessage() { Text = "Complex Hello" }));
+            //((IClientChannel)channel).Close();
+            //factory.Close();
         }
 
         private static void CallUsingWebRequest() 

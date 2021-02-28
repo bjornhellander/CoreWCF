@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Contract
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(IEchoServiceCallback))]
     public interface IEchoService
     {
         [OperationContract]
